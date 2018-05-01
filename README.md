@@ -14,6 +14,11 @@ cppfun: A generate cpp function definition plugin for vim
     noremap <leader>y :CopyFun<cr>
     noremap <leader>p :PasteFun<cr>
 
+截图
+------------
+
+![][3]
+
 License
 ------------
 
@@ -22,3 +27,4 @@ This software is licensed under the [MIT license][2]. © 2018 chxuan
 
   [1]: https://github.com/VundleVim/Vundle.vim
   [2]: https://github.com/chxuan/cppfun/blob/master/LICENSE
+  [3]: https://raw.githubusercontent.com/chxuan/cppfun/master/screenshots/cppfun.git
