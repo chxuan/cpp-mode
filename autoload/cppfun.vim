@@ -71,10 +71,8 @@ function! GetFunctionSkeleton()
     let skeleton = EraseChar(TrimLeft(s:function_line, " "), ";")
 
     if IsContains(skeleton, s:class_name . "(")
-        echo "aaaaaaaaaaaaaa"
         let skeleton = GetDefaultFunction(skeleton)
     else
-        echo "bbbbbbbbbbbbb" . s:class_name
         let skeleton = GetNormalFunction(skeleton)
     endif
 
