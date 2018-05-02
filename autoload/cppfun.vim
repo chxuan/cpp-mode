@@ -100,13 +100,13 @@ endfunction
 
 " 删除字符串列表
 function! EraseStringList(str, list)
-    let temp = a:str
+    let result = a:str
 
     for i in range(0, len(a:list) - 1)
-        let temp = substitute(temp, a:list[i], "", "")
+        let result = substitute(result, a:list[i], "", "")
     endfor
     
-    return temp
+    return result
 endfunction
 
 "删除特定字符
