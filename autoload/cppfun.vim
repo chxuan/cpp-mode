@@ -46,7 +46,8 @@ endfunction
 
 " 解析类名
 function! ParseClassName(line)
-    let list = split(a:line, "class ")
+    let list = split(a:line, ":")
+    let list = split(list[0], "class ")
     let temp = ""
 
     if len(list) == 1
@@ -57,8 +58,8 @@ function! ParseClassName(line)
 
     let class_name = ""
 
-    for i in range(0, len(temp))
-        if temp[i] != " " && temp[i] != "{"
+    for i in range(0, len(temp) - 1)
+        if temp[i] != " " && temp[i] != "{" && temp[i] != "*" && temp[i] != "/"
             let class_name = class_name . temp[i]
         endif
     endfor
@@ -68,7 +69,8 @@ endfunction
 
 " 获得函数骨架代码
 function! GetFunctionSkeleton()
-    let skeleton = EraseChar(TrimLeft(s:function_line, " "), ";")
+    let key_words = ["inline", "static", "virtual", "override", "final"]
+    let skeleton = EraseChar(TrimLeft(EraseStringList(s:function_line, key_words), " "), ";")
 
     if IsContains(skeleton, s:class_name . "(")
         let skeleton = GetDefaultFunction(skeleton)
@@ -84,7 +86,7 @@ function! TrimLeft(str, token)
     let status = 1
     let result = ""
 
-    for i in range(0, len(a:str))
+    for i in range(0, len(a:str) - 1)
         if status == 1 && a:str[i] != a:token
             let result = result . a:str[i]
             let status = 2
@@ -96,11 +98,22 @@ function! TrimLeft(str, token)
     return result
 endfunction
 
+" 删除字符串列表
+function! EraseStringList(str, list)
+    let temp = a:str
+
+    for i in range(0, len(a:list) - 1)
+        let temp = substitute(temp, a:list[i], "", "")
+    endfor
+    
+    return temp
+endfunction
+
 "删除特定字符
 function! EraseChar(str, token)
     let result = ""
 
-    for i in range(0, len(a:str))
+    for i in range(0, len(a:str) - 1)
         if a:str[i] != a:token
             let result = result . a:str[i]
         endif
