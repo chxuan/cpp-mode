@@ -70,7 +70,7 @@ endfunction
 " 获得函数骨架代码
 function! GetFunctionSkeleton()
     let key_words = ["inline", "static", "virtual", "override", "final"]
-    let skeleton = EraseChar(TrimLeft(EraseStringList(s:function_line, key_words), " "), ";")
+    let skeleton = EraseChar(TrimLeft(EraseStringList(s:function_line, key_words)), ";")
 
     if IsContains(skeleton, s:class_name . "(")
         let skeleton = GetDefaultFunction(skeleton)
@@ -81,13 +81,13 @@ function! GetFunctionSkeleton()
     return skeleton . "\n{\n\n}\n"
 endfunction
 
-" 删除字符串左边特定字符
-function! TrimLeft(str, token)
+" 删除字符串左边空格和制表符
+function! TrimLeft(str)
     let status = 1
     let result = ""
 
     for i in range(0, len(a:str) - 1)
-        if status == 1 && a:str[i] != a:token
+        if status == 1 && a:str[i] != " " && a:str[i] != "\t"
             let result = result . a:str[i]
             let status = 2
         elseif status == 2
