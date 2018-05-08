@@ -129,8 +129,10 @@ endfunction
 
 " 获得一般类成员函数
 function! GetNormalFunction(fun)
-    let pos = match(a:fun, " ")
-    return strpart(a:fun, 0, pos) . " " . s:class_name . "::" . strpart(a:fun, pos + 1, len(a:fun))
+    let pos = stridx(a:fun, "(")
+    let temp = strpart(a:fun, 0, pos)
+    let fun_pos = strridx(temp, " ")
+    return strpart(a:fun, 0, fun_pos) . " " . s:class_name . "::" . strpart(a:fun, fun_pos + 1, len(a:fun))
 endfunction
 
 " 设置光标位置
