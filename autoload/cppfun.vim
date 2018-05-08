@@ -124,7 +124,13 @@ endfunction
 
 " 获得默认类成员函数（构造函数、析构函数等没有返回值的函数）
 function! GetDefaultFunction(fun)
-    return s:class_name . "::" . a:fun
+    let default_fun = s:class_name . "::" . a:fun
+
+    if IsContains(default_fun, "=")
+        return CleanFunctionParamValue(default_fun)
+    else
+        return default_fun
+    endif
 endfunction
 
 " 获得一般类成员函数
@@ -132,7 +138,33 @@ function! GetNormalFunction(fun)
     let pos = stridx(a:fun, "(")
     let temp = strpart(a:fun, 0, pos)
     let fun_pos = strridx(temp, " ")
-    return strpart(a:fun, 0, fun_pos) . " " . s:class_name . "::" . strpart(a:fun, fun_pos + 1, len(a:fun))
+    let normal_fun = strpart(a:fun, 0, fun_pos) . " " . s:class_name . "::" . strpart(a:fun, fun_pos + 1, len(a:fun))
+
+    if IsContains(normal_fun, "=")
+        return CleanFunctionParamValue(normal_fun)
+    else
+        return normal_fun
+    endif
+endfunction
+
+" 注释函数默认参数值
+function! CleanFunctionParamValue(fun)
+    let status = 0
+    let result = ""
+
+    for i in range(0, len(a:fun) - 1)
+        if a:fun[i] == "="
+            let result = result . "/*"
+            let status = 1
+        elseif status == 1 && (a:fun[i] == "," || a:fun[i] == ")")
+            let result = result . "*/"
+            let status = 0
+        endif
+
+        let result = result . a:fun[i]
+    endfor
+
+    return result
 endfunction
 
 " 设置光标位置
