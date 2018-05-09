@@ -5,17 +5,25 @@
 " License: MIT
 " ==============================================================
 
-" 函数所在行代码
-let s:function_line = ""
-" 函数所在类名
+" 函数声明
+let s:fun_declaration = ""
+" 函数模板声明
+let s:fun_template_declaration = ""
+" 类名
 let s:class_name = ""
+" 模板类声明
+let s:class_template_declaration = ""
 
 " 拷贝函数
 function! cppfun#CopyFunction()
-    let s:function_line = getline(".")
-    echo s:function_line
+    let s:fun_declaration = GetFunctionDeclaration()
+    let s:fun_template_declaration = GetFunctionTemplateDeclaration()
+    echo s:fun_template_declaration
+    echo s:fun_declaration
 
-    let s:class_name = GetClassNameOfFunction()
+    let line_num = GetLineNumOfClassName()
+    let s:class_name = GetClassNameOfFunction(line_num)
+    let s:class_template_declaration = GetClassTemplateDeclaration(line_num)
 endfunction
 
 " 粘贴函数
@@ -24,19 +32,53 @@ function! cppfun#PasteFunction()
     call SetCursorPosInFunction()
 endfunction
 
-" 获得函数所在类名
-function! GetClassNameOfFunction()
+" 获得函数声明
+function! GetFunctionDeclaration()
+    return getline(".")
+endfunction
+
+" 获得函数模板声明
+function! GetFunctionTemplateDeclaration()
+    let current_num  = line('.')
+    let line = getline(current_num - 1)
+
+    if IsContains(line, "template")
+        return line
+    else
+        return ""
+    endif
+endfunction
+
+" 获得类名所在行号, -1表示未找到
+function! GetLineNumOfClassName()
     let current_num  = line('.')
 
     while current_num >= 1
         let line = getline(current_num)
         if IsContains(line, "class ")
-            return ParseClassName(line)
+            return current_num
         endif
         let current_num = current_num - 1
     endwhile
 
-    return ""
+    return -1
+endfunction
+
+" 获得函数所在类名
+function! GetClassNameOfFunction(line_num)
+    let line = getline(a:line_num)
+    return ParseClassName(line)
+endfunction
+
+" 获得类模板声明
+function! GetClassTemplateDeclaration(line_num)
+    let line = getline(a:line_num - 1)
+
+    if IsContains(line, "template")
+        return line
+    else
+        return ""
+    endif
 endfunction
 
 " 判断字符串(列表)包含
@@ -69,8 +111,7 @@ endfunction
 
 " 获得函数骨架代码
 function! GetFunctionSkeleton()
-    let key_words = ["inline", "static", "virtual", "override", "final"]
-    let skeleton = EraseChar(TrimLeft(EraseStringList(s:function_line, key_words)), ";")
+    let skeleton = RemoveFunctionKeyWords()
 
     if IsContains(skeleton, s:class_name . "(")
         let skeleton = GetDefaultFunction(skeleton)
@@ -78,7 +119,15 @@ function! GetFunctionSkeleton()
         let skeleton = GetNormalFunction(skeleton)
     endif
 
-    return skeleton . "\n{\n\n}\n"
+    if IsContains(skeleton, "=")
+        let skeleton = CleanFunctionParamValue(skeleton)
+    endif
+
+    if s:fun_template_declaration != ""
+        let skeleton = AddFunctionTemplate(skeleton)
+    endif
+
+    return AddFunctionBody(skeleton)
 endfunction
 
 " 删除字符串左边空格和制表符
@@ -122,15 +171,15 @@ function! EraseChar(str, token)
     return result
 endfunction
 
+" 去除函数关键字
+function! RemoveFunctionKeyWords()
+    let key_words = ["inline", "static", "virtual", "override", "final"]
+    return EraseChar(TrimLeft(EraseStringList(s:fun_declaration, key_words)), ";")
+endfunction
+
 " 获得默认类成员函数（构造函数、析构函数等没有返回值的函数）
 function! GetDefaultFunction(fun)
-    let default_fun = s:class_name . "::" . a:fun
-
-    if IsContains(default_fun, "=")
-        return CleanFunctionParamValue(default_fun)
-    else
-        return default_fun
-    endif
+    return s:class_name . "::" . a:fun
 endfunction
 
 " 获得一般类成员函数
@@ -138,13 +187,8 @@ function! GetNormalFunction(fun)
     let pos = stridx(a:fun, "(")
     let temp = strpart(a:fun, 0, pos)
     let fun_pos = strridx(temp, " ")
-    let normal_fun = strpart(a:fun, 0, fun_pos) . " " . s:class_name . "::" . strpart(a:fun, fun_pos + 1, len(a:fun))
 
-    if IsContains(normal_fun, "=")
-        return CleanFunctionParamValue(normal_fun)
-    else
-        return normal_fun
-    endif
+    return strpart(a:fun, 0, fun_pos) . " " . s:class_name . "::" . strpart(a:fun, fun_pos + 1, len(a:fun))
 endfunction
 
 " 注释函数默认参数值
@@ -165,6 +209,16 @@ function! CleanFunctionParamValue(fun)
     endfor
 
     return result
+endfunction
+
+" 增加函数模板
+function! AddFunctionTemplate(fun)
+    return TrimLeft(s:fun_template_declaration) . "\n" . a:fun
+endfunction
+
+" 增加函数体
+function! AddFunctionBody(fun)
+    return a:fun . "\n{\n\n}\n"
 endfunction
 
 " 设置光标位置
