@@ -55,7 +55,7 @@ function! GetLineNumOfClassName()
 
     while current_num >= 1
         let line = getline(current_num)
-        if IsContains(line, "class ")
+        if IsContains(line, "class ") && !IsContains(line, "template")
             return current_num
         endif
         let current_num = current_num - 1
@@ -127,6 +127,10 @@ function! GetFunctionSkeleton()
         let skeleton = AddFunctionTemplate(skeleton)
     endif
 
+    if s:class_template_declaration != ""
+        let skeleton = AddClassTemplate(skeleton)
+    endif
+
     return AddFunctionBody(skeleton)
 endfunction
 
@@ -152,10 +156,15 @@ function! EraseStringList(str, list)
     let result = a:str
 
     for i in range(0, len(a:list) - 1)
-        let result = substitute(result, a:list[i], "", "")
+        let result = ReplaceString(result, a:list[i], "")
     endfor
     
     return result
+endfunction
+
+" 替换字符串
+function! ReplaceString(str, src, target)
+    return substitute(a:str, a:src, a:target, "")
 endfunction
 
 "删除特定字符
@@ -214,6 +223,18 @@ endfunction
 " 增加函数模板
 function! AddFunctionTemplate(fun)
     return TrimLeft(s:fun_template_declaration) . "\n" . a:fun
+endfunction
+
+" 增加类模板
+function! AddClassTemplate(fun)
+    let type = GetClassTemplateType()
+    return s:class_template_declaration . "\n" . ReplaceString(a:fun, "::", type . "::")
+endfunction
+
+" 获得类类型
+function! GetClassTemplateType()
+    let key_words = ["template", "typename", "class"]
+    return EraseChar(EraseStringList(s:class_template_declaration, key_words), " ")
 endfunction
 
 " 增加函数体
