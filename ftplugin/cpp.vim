@@ -5,7 +5,7 @@
 " License: MIT
 " ==============================================================
 
-if exists('g:cppfun_loaded')
+if exists("g:cppfun_loaded")
     finish
 endif
 

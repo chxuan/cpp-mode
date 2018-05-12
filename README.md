@@ -11,8 +11,8 @@ cppfun: A generate cpp function definition plugin for vim
 
 请将以下配置加到 `~/.vimrc`:
 
-    noremap <leader>y :CopyFun<cr>
-    noremap <leader>p :PasteFun<cr>
+    nnoremap <leader>y :CopyFun<cr>
+    nnoremap <leader>p :PasteFun<cr>
 
 截图
 ------------
