@@ -13,9 +13,12 @@ let s:fun_template_declaration = ""
 let s:class_name = ""
 " 模板类声明
 let s:class_template_declaration = ""
+" 拷贝函数时，光标所在行
+let s:fun_row_num = 0
 
 " 拷贝函数
 function! cppfun#CopyFunction()
+    let s:fun_row_num = line('.')
     let s:fun_declaration = GetFunctionDeclaration()
     let s:fun_template_declaration = GetFunctionTemplateDeclaration()
     echo s:fun_template_declaration
@@ -29,7 +32,7 @@ endfunction
 " 粘贴函数
 function! cppfun#PasteFunction()
     execute "normal o" . GetFunctionSkeleton()
-    call SetCursorPosInFunction()
+    call SetCursorPosition(line('.') - 2)
 endfunction
 
 " 获得函数声明
@@ -49,19 +52,11 @@ function! GetFunctionTemplateDeclaration()
     endif
 endfunction
 
-" 获得类名所在行号, -1表示未找到
+" 获得类名所在行号
 function! GetLineNumOfClassName()
-    let current_num  = line('.')
-
-    while current_num >= 1
-        let line = getline(current_num)
-        if IsContains(line, "class ") && !IsContains(line, "template")
-            return current_num
-        endif
-        let current_num = current_num - 1
-    endwhile
-
-    return -1
+    let line_num = search('\%(\<class\>\|\<struct\>\)\_\s\+\w\+\_\s\+\%(:\%(\_\s*\w\+\)\{1,2}\)\?\_\s*{', 'b')
+    call SetCursorPosition(s:fun_row_num)
+    return line_num
 endfunction
 
 " 获得函数所在类名
@@ -88,25 +83,7 @@ endfunction
 
 " 解析类名
 function! ParseClassName(line)
-    let list = split(a:line, ":")
-    let list = split(list[0], "class ")
-    let temp = ""
-
-    if len(list) == 1
-        let temp = list[0]
-    elseif len(list) == 2
-        let temp = list[1]
-    endif
-
-    let class_name = ""
-
-    for i in range(0, len(temp) - 1)
-        if temp[i] != " " && temp[i] != "{" && temp[i] != "*" && temp[i] != "/"
-            let class_name = class_name . temp[i]
-        endif
-    endfor
-
-    return class_name
+    return matchlist(a:line, '\(\<class\>\|\<struct\>\)\s\+\(\w[a-zA-Z0-9_]*\)')[2]
 endfunction
 
 " 获得函数骨架代码
@@ -182,7 +159,7 @@ endfunction
 
 " 去除函数关键字
 function! RemoveFunctionKeyWords()
-    let key_words = ["inline", "static", "virtual", "override", "final"]
+    let key_words = ["inline", "static", "virtual", "explicit", "override", "final"]
     return EraseChar(TrimLeft(EraseStringList(s:fun_declaration, key_words)), ";")
 endfunction
 
@@ -243,7 +220,7 @@ function! AddFunctionBody(fun)
 endfunction
 
 " 设置光标位置
-function! SetCursorPosInFunction()
-    let pos = [0, line(".") - 2, 0, 0]  
-    call setpos(".", pos)  
+function! SetCursorPosition(line_num)
+    let pos = [0, a:line_num, 0, 0]  
+    call setpos(".", pos)
 endfunction
