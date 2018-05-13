@@ -27,4 +27,4 @@ This software is licensed under the [MIT license][2]. © 2018 chxuan
 
   [1]: https://github.com/VundleVim/Vundle.vim
   [2]: https://github.com/chxuan/cppfun/blob/master/LICENSE
-  [3]: https://raw.githubusercontent.com/chxuan/cppfun/master/screenshots/cppfun.git
+  [3]: https://raw.githubusercontent.com/chxuan/cppfun/master/screenshots/cppfun.gif
