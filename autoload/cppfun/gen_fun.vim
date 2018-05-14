@@ -28,7 +28,7 @@ endfunction
 
 " 粘贴函数
 function! cppfun#gen_fun#PasteFunction()
-    execute "normal o" . <sid>GetFunctionSkeleton()
+    call cppfun#util#WriteTextAtNextLine(<sid>GetFunctionSkeleton())
     call cppfun#util#SetCursorPosition(line('.') - 2)
 endfunction
 

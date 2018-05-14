@@ -35,7 +35,8 @@ endfunction
 
 " 替换字符串
 function! cppfun#util#ReplaceString(str, src, target)
-    return substitute(a:str, a:src, a:target, "")
+    " return substitute(a:str, a:src, a:target, "")
+    return substitute(a:str, a:src, a:target, "g")
 endfunction
 
 "删除特定字符
@@ -60,4 +61,19 @@ endfunction
 function! cppfun#util#SetCursorPosition(line_num)
     let pos = [0, a:line_num, 0, 0]  
     call setpos(".", pos)
+endfunction
+
+" 在当前行写入文本
+function! cppfun#util#WriteTextAtCurrentLine(text)
+    execute "normal i" . a:text
+endfunction
+
+" 在下一行行写入文本
+function! cppfun#util#WriteTextAtNextLine(text)
+    execute "normal o" . a:text
+endfunction
+
+" 从当前行开始对齐
+function! cppfun#util#CodeAlignment()
+    execute "normal =G"
 endfunction
