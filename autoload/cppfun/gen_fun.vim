@@ -13,12 +13,9 @@ let s:fun_template_declaration = ""
 let s:class_name = ""
 " 模板类声明
 let s:class_template_declaration = ""
-" 拷贝函数时，光标所在行
-let s:fun_row_num = 0
 
 " 拷贝函数
 function! cppfun#gen_fun#CopyFunction()
-    let s:fun_row_num = line('.')
     let s:fun_declaration = <sid>GetFunctionDeclaration()
     let s:fun_template_declaration = <sid>GetFunctionTemplateDeclaration()
     echo s:fun_template_declaration
@@ -54,9 +51,17 @@ endfunction
 
 " 获得类名所在行号
 function! s:GetLineNumOfClassName()
-    let line_num = search('\%(\<class\>\|\<struct\>\)\_\s\+\w\+\_\s\+\%(:\%(\_\s*\w\+\)\{1,2}\)\?\_\s*{', 'b')
-    call cppfun#util#SetCursorPosition(s:fun_row_num)
-    return line_num
+    let current_num  = line('.')
+
+    while current_num >= 1
+        let line = getline(current_num)
+        if (cppfun#util#IsContains(line, "class ") || cppfun#util#IsContains(line, "struct ")) && !cppfun#util#IsContains(line, "template")
+            return current_num
+        endif
+        let current_num = current_num - 1
+    endwhile
+
+    return -1
 endfunction
 
 " 获得函数所在类名
