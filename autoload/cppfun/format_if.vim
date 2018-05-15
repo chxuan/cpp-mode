@@ -5,6 +5,6 @@
 " License: MIT
 " ==============================================================
 
-function! cppfun#format_if#FormatIf()
+function! cppfun#format_if#format_if()
     echo "format if"
 endfunction
