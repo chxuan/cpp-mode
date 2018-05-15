@@ -21,41 +21,41 @@ function! cppfun#gen_fun#copy_function()
     echo s:fun_template_declaration
     echo s:fun_declaration
 
-    let line_num = <sid>get_line_num_of_class_name()
-    let s:class_name = <sid>get_class_name_of_function(line_num)
-    let s:class_template_declaration = <sid>get_class_template_declaration(line_num)
+    let row_num = <sid>get_row_num_of_class_name()
+    let s:class_name = <sid>get_class_name_of_function(row_num)
+    let s:class_template_declaration = <sid>get_class_template_declaration(row_num)
 endfunction
 
 " 粘贴函数
 function! cppfun#gen_fun#paste_function()
-    call cppfun#util#write_text_at_next_line(<sid>get_function_skeleton())
-    call cppfun#util#set_cursor_position(line('.') - 2)
+    call cppfun#util#write_text_at_next_row(<sid>get_function_skeleton())
+    call cppfun#util#set_cursor_position(cppfun#util#get_current_row_num() - 2)
 endfunction
 
 " 获得函数声明
 function! s:get_function_declaration()
-    return getline(".")
+    return cppfun#util#get_current_row_text()
 endfunction
 
 " 获得函数模板声明
 function! s:get_function_template_declaration()
-    let current_num  = line('.')
-    let line = getline(current_num - 1)
+    let current_num = cppfun#util#get_current_row_num()
+    let text = cppfun#util#get_row_text(current_num - 1)
 
-    if cppfun#util#is_contains(line, "template")
-        return line
+    if cppfun#util#is_contains(text, "template")
+        return text
     else
         return ""
     endif
 endfunction
 
 " 获得类名所在行号
-function! s:get_line_num_of_class_name()
-    let current_num  = line('.')
+function! s:get_row_num_of_class_name()
+    let current_num = cppfun#util#get_current_row_num()
 
     while current_num >= 1
-        let line = getline(current_num)
-        if (cppfun#util#is_contains(line, "class ") || cppfun#util#is_contains(line, "struct ")) && !cppfun#util#is_contains(line, "template")
+        let text = cppfun#util#get_row_text(current_num)
+        if (cppfun#util#is_contains(text, "class ") || cppfun#util#is_contains(text, "struct ")) && !cppfun#util#is_contains(text, "template")
             return current_num
         endif
         let current_num = current_num - 1
@@ -65,25 +65,25 @@ function! s:get_line_num_of_class_name()
 endfunction
 
 " 获得函数所在类名
-function! s:get_class_name_of_function(line_num)
-    let line = getline(a:line_num)
-    return <sid>parse_class_name(line)
+function! s:get_class_name_of_function(row_num)
+    let text = cppfun#util#get_row_text(a:row_num)
+    return <sid>parse_class_name(text)
 endfunction
 
 " 获得类模板声明
-function! s:get_class_template_declaration(line_num)
-    let line = getline(a:line_num - 1)
+function! s:get_class_template_declaration(row_num)
+    let text = cppfun#util#get_row_text(a:row_num - 1)
 
-    if cppfun#util#is_contains(line, "template")
-        return line
+    if cppfun#util#is_contains(text, "template")
+        return text
     else
         return ""
     endif
 endfunction
 
 " 解析类名
-function! s:parse_class_name(line)
-    return matchlist(a:line, '\(\<class\>\|\<struct\>\)\s\+\(\w[a-zA-Z0-9_]*\)')[2]
+function! s:parse_class_name(text)
+    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w[a-zA-Z0-9_]*\)')[2]
 endfunction
 
 " 获得函数骨架代码

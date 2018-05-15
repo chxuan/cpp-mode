@@ -63,16 +63,31 @@ function! cppfun#util#set_cursor_position(line_num)
 endfunction
 
 " 在当前行写入文本
-function! cppfun#util#write_text_at_current_line(text)
+function! cppfun#util#write_text_at_current_row(text)
     execute "normal i" . a:text
 endfunction
 
 " 在下一行行写入文本
-function! cppfun#util#write_text_at_next_line(text)
+function! cppfun#util#write_text_at_next_row(text)
     execute "normal o" . a:text
 endfunction
 
 " 从当前行开始对齐
 function! cppfun#util#code_alignment()
     execute "normal =G"
+endfunction
+
+" 获得当前行号
+function! cppfun#util#get_current_row_num()
+    return line(".")
+endfunction
+
+" 获得当前行文本
+function! cppfun#util#get_current_row_text()
+    return getline(".")
+endfunction
+
+" 获得指定行文本
+function! cppfun#util#get_row_text(row_num)
+    return getline(a:row_num)
 endfunction
