@@ -73,7 +73,7 @@ function! cppfun#util#write_text_at_next_row(text)
 endfunction
 
 " 从当前行开始对齐
-function! cppfun#util#code_alignment()
+function! cppfun#util#set_code_alignment()
     execute "normal =G"
 endfunction
 
@@ -90,4 +90,32 @@ endfunction
 " 获得指定行文本
 function! cppfun#util#get_row_text(row_num)
     return getline(a:row_num)
+endfunction
+
+" 删除当前行
+function! cppfun#util#delete_current_row()
+    execute "normal dd"
+endfunction
+
+" 将下一行追加到当前行尾
+function! cppfun#util#append_to_current_row()
+    execute "normal J"
+endfunction
+
+" 合并开始、结束行之间的文本
+function! cppfun#util#merge_row(begin_num, end_num)
+    for i in range(a:begin_num, a:end_num - 1)
+        call cppfun#util#append_to_current_row()
+    endfor
+endfunction
+
+" 获得开始、结束行之间的文本
+function! cppfun#util#get_text(begin_num, end_num)
+    let text = ""
+
+    for i in range(a:begin_num, a:end_num)
+        let text = text . cppfun#util#get_row_text(i)
+    endfor
+
+    return text
 endfunction

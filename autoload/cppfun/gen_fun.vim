@@ -16,29 +16,29 @@ let s:class_template_declaration = ""
 
 " 拷贝函数
 function! cppfun#gen_fun#copy_function()
-    let s:fun_declaration = <sid>get_function_declaration()
-    let s:fun_template_declaration = <sid>get_function_template_declaration()
+    let s:fun_declaration = <sid>get_fun_declaration()
+    let s:fun_template_declaration = <sid>get_fun_template_declaration()
     echo s:fun_template_declaration
     echo s:fun_declaration
 
     let row_num = <sid>get_row_num_of_class_name()
-    let s:class_name = <sid>get_class_name_of_function(row_num)
+    let s:class_name = <sid>get_class_name_of_fun(row_num)
     let s:class_template_declaration = <sid>get_class_template_declaration(row_num)
 endfunction
 
 " 粘贴函数
 function! cppfun#gen_fun#paste_function()
-    call cppfun#util#write_text_at_next_row(<sid>get_function_skeleton())
+    call cppfun#util#write_text_at_next_row(<sid>get_fun_skeleton())
     call cppfun#util#set_cursor_position(cppfun#util#get_current_row_num() - 2)
 endfunction
 
 " 获得函数声明
-function! s:get_function_declaration()
+function! s:get_fun_declaration()
     return cppfun#util#get_current_row_text()
 endfunction
 
 " 获得函数模板声明
-function! s:get_function_template_declaration()
+function! s:get_fun_template_declaration()
     let current_num = cppfun#util#get_current_row_num()
     let text = cppfun#util#get_row_text(current_num - 1)
 
@@ -65,7 +65,7 @@ function! s:get_row_num_of_class_name()
 endfunction
 
 " 获得函数所在类名
-function! s:get_class_name_of_function(row_num)
+function! s:get_class_name_of_fun(row_num)
     let text = cppfun#util#get_row_text(a:row_num)
     return <sid>parse_class_name(text)
 endfunction
@@ -87,43 +87,43 @@ function! s:parse_class_name(text)
 endfunction
 
 " 获得函数骨架代码
-function! s:get_function_skeleton()
-    let skeleton = <sid>remove_function_key_words()
+function! s:get_fun_skeleton()
+    let skeleton = <sid>remove_fun_key_words()
 
     if cppfun#util#is_contains(skeleton, s:class_name . "(")
-        let skeleton = <sid>get_default_function(skeleton)
+        let skeleton = <sid>get_default_fun(skeleton)
     else
-        let skeleton = <sid>get_normal_function(skeleton)
+        let skeleton = <sid>get_normal_fun(skeleton)
     endif
 
     if cppfun#util#is_contains(skeleton, "=")
-        let skeleton = <sid>clean_function_param_value(skeleton)
+        let skeleton = <sid>clean_fun_param_value(skeleton)
     endif
 
     if s:fun_template_declaration != ""
-        let skeleton = <sid>add_function_template(skeleton)
+        let skeleton = <sid>add_fun_template(skeleton)
     endif
 
     if s:class_template_declaration != ""
         let skeleton = <sid>add_class_template(skeleton)
     endif
 
-    return <sid>add_function_body(skeleton)
+    return <sid>add_fun_body(skeleton)
 endfunction
 
 " 去除函数关键字
-function! s:remove_function_key_words()
+function! s:remove_fun_key_words()
     let key_words = ["inline", "static", "virtual", "explicit", "override", "final"]
     return cppfun#util#erase_char(cppfun#util#trim_left(cppfun#util#erase_string_list(s:fun_declaration, key_words)), ";")
 endfunction
 
 " 获得默认类成员函数（构造函数、析构函数等没有返回值的函数）
-function! s:get_default_function(fun)
+function! s:get_default_fun(fun)
     return s:class_name . "::" . a:fun
 endfunction
 
 " 获得一般类成员函数
-function! s:get_normal_function(fun)
+function! s:get_normal_fun(fun)
     let pos = stridx(a:fun, "(")
     let temp = strpart(a:fun, 0, pos)
     let fun_pos = strridx(temp, " ")
@@ -132,7 +132,7 @@ function! s:get_normal_function(fun)
 endfunction
 
 " 注释函数默认参数值
-function! s:clean_function_param_value(fun)
+function! s:clean_fun_param_value(fun)
     let status = 0
     let result = ""
 
@@ -152,7 +152,7 @@ function! s:clean_function_param_value(fun)
 endfunction
 
 " 增加函数模板
-function! s:add_function_template(fun)
+function! s:add_fun_template(fun)
     return cppfun#util#trim_left(s:fun_template_declaration) . "\n" . a:fun
 endfunction
 
@@ -169,7 +169,7 @@ function! s:get_class_template_type()
 endfunction
 
 " 增加函数体
-function! s:add_function_body(fun)
+function! s:add_fun_body(fun)
     return a:fun . "\n{\n\n}\n"
 endfunction
 

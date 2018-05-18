@@ -5,9 +5,6 @@
 " License: MIT
 " ==============================================================
 
-" 函数所在行
-let s:fun_row_num = 0
-
 " 格式化函数参数
 function! cppfun#format_fun_param#format_function_param()
     if <sid>is_ready_format()
@@ -15,12 +12,6 @@ function! cppfun#format_fun_param#format_function_param()
     else
         call <sid>format_param()
     endif
-    " let s:fun_row_num = line(".")
-    " let fun = <sid>get_function()
-    " call <sid>delete_current_line()
-    " call cppfun#util#write_text_at_current_row(<sid>format_fun_param(fun))
-    " call cppfun#util#set_cursor_position(s:fun_row_num)
-    " call cppfun#util#code_alignment()
 endfunction
 
 " 检查是否已经格式化
@@ -36,23 +27,55 @@ endfunction
 
 " 格式化函数参数
 function! s:format_param()
-    " let result = cppfun#util#replace_string(a:fun, ",", ",\n")
-    " return result . "\n"
-    echo "format_param"
+    let fun_row_num = cppfun#util#get_current_row_num()
+    let fun = cppfun#util#get_current_row_text()
+    call cppfun#util#delete_current_row()
+    call cppfun#util#write_text_at_current_row(<sid>get_format_fun_text(fun))
+    call cppfun#util#set_cursor_position(fun_row_num)
+    call cppfun#util#set_code_alignment()
 endfunction
 
 " 恢复格式化函数参数
 function! s:recover_format_param()
-    echo "recover_format_param"
+    let begin_num = <sid>get_fun_begin_num()
+    let end_num = <sid>get_fun_end_num()
+    call cppfun#util#set_cursor_position(begin_num)
+    call cppfun#util#merge_row(begin_num, end_num)
 endfunction
 
-" 获得函数
-function! s:get_function()
-    return getline(".")
+" 获得格式化后的函数文本
+function! s:get_format_fun_text(fun)
+    let result = cppfun#util#replace_string(a:fun, ",", ",\n")
+    return result . "\n"
 endfunction
 
-" 删除当前行
-function! s:delete_current_line()
-    execute "normal dd"
+" 获得函数开始行号
+function! s:get_fun_begin_num()
+    let current_num = cppfun#util#get_current_row_num()
+
+    while current_num >= 1
+        let text = cppfun#util#get_row_text(current_num)
+        if cppfun#util#is_contains(text, "(")
+            return current_num
+        endif
+        let current_num = current_num - 1
+    endwhile
+
+    return -1
 endfunction
 
+" 获得函数结束行号
+function! s:get_fun_end_num()
+    let current_num = cppfun#util#get_current_row_num()
+    let end_num = current_num + 100
+
+    while current_num < end_num
+        let text = cppfun#util#get_row_text(current_num)
+        if cppfun#util#is_contains(text, ")")
+            return current_num
+        endif
+        let current_num = current_num + 1
+    endwhile
+
+    return -1
+endfunction
