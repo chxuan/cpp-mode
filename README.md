@@ -13,6 +13,8 @@ cppfun: A generate cpp function definition plugin for vim
 
     nnoremap <leader>y :CopyFun<cr>
     nnoremap <leader>p :PasteFun<cr>
+    nnoremap <leader><leader>fp :FormatFunParam<cr>
+    nnoremap <leader><leader>if :FormatIf<cr>
 
 截图
 ------------
