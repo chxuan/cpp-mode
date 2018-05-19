@@ -58,7 +58,7 @@ function! s:get_row_num_of_class_name()
         if (cppfun#util#is_contains(text, "class ") || cppfun#util#is_contains(text, "struct ")) && !cppfun#util#is_contains(text, "template")
             return current_num
         endif
-        let current_num = current_num - 1
+        let current_num -= 1
     endwhile
 
     return -1

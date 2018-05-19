@@ -58,7 +58,7 @@ function! s:get_fun_begin_num()
         if cppfun#util#is_contains(text, "(")
             return current_num
         endif
-        let current_num = current_num - 1
+        let current_num -= 1
     endwhile
 
     return -1
@@ -74,7 +74,7 @@ function! s:get_fun_end_num()
         if cppfun#util#is_contains(text, ")")
             return current_num
         endif
-        let current_num = current_num + 1
+        let current_num += 1
     endwhile
 
     return -1
