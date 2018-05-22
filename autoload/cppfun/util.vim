@@ -73,8 +73,8 @@ function! cppfun#util#write_text_at_next_row(text)
 endfunction
 
 " 从当前行开始对齐
-function! cppfun#util#set_code_alignment()
-    execute "normal =G"
+function! cppfun#util#set_code_alignment(size)
+    execute "normal =" . a:size . "="
 endfunction
 
 " 获得当前行号

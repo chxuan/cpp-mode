@@ -32,7 +32,9 @@ function! s:format_param()
     call cppfun#util#delete_current_row()
     call cppfun#util#write_text_at_current_row(<sid>get_format_if_text(text))
     call cppfun#util#set_cursor_position(fun_row_num)
-    call cppfun#util#set_code_alignment()
+    let begin_num = <sid>get_if_begin_num()
+    let end_num = <sid>get_if_end_num()
+    call cppfun#util#set_code_alignment(end_num - begin_num + 2)
 endfunction
 
 " 恢复格式化if参数
