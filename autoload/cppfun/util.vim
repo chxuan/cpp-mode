@@ -57,8 +57,8 @@ function! cppfun#util#is_contains(main, sub)
 endfunction
 
 " 设置光标位置
-function! cppfun#util#set_cursor_position(line_num)
-    let pos = [0, a:line_num, 0, 0]  
+function! cppfun#util#set_cursor_position(row_num)
+    let pos = [0, a:row_num, 0, 0]  
     call setpos(".", pos)
 endfunction
 
@@ -119,3 +119,54 @@ function! cppfun#util#get_text(begin_num, end_num)
 
     return text
 endfunction
+
+" 分割字符串
+function! cppfun#util#split_string(str, separator)
+    return split(a:str, a:separator)
+endfunction
+
+" 查找字符串
+function! cppfun#util#find(str, target)
+    return stridx(a:str, a:target)
+endfunction
+
+" 反向查找字符串
+function! cppfun#util#find_r(str, target)
+    return strridx(a:str, a:target)
+endfunction
+
+" 获得子字符串
+function! cppfun#util#substr(str, start, count)
+    return strpart(a:str, a:start, a:count)
+endfunction
+
+" 判断文件是否存在
+function! cppfun#util#is_file_exists(file_path)
+    return filereadable(a:file_path)
+endfunction
+
+" 获取当前文件路径
+function! cppfun#util#get_current_file_path()
+    return expand("%:p")
+endfunction
+
+" 获取当前文件后缀名
+function! cppfun#util#get_current_file_suffix()
+    return expand("%:e")
+endfunction
+
+" 获取光标下的单词
+function! cppfun#util#get_current_cursor_word()
+    return expand("<cword>")
+endfunction
+
+" 读取文件
+function! cppfun#util#read_file(file_path)
+    return readfile(a:file_path)
+endfunction
+
+" 打开窗口
+function! cppfun#util#open_window(file_path)
+    execute ":edit " . a:file_path
+endfunction
+

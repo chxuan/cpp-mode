@@ -13,5 +13,6 @@ let g:cppfun_loaded = 1
 
 command! -nargs=0 CopyFun :call cppfun#gen_fun#copy_function() 
 command! -nargs=0 PasteFun :call cppfun#gen_fun#paste_function()
+command! -nargs=0 GoToDefinition :call cppfun#go_to_definition#go_to_definition()
 command! -nargs=0 FormatFunParam :call cppfun#format_fun_param#format_function_param()
 command! -nargs=0 FormatIf :call cppfun#format_if#format_if()

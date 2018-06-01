@@ -124,11 +124,11 @@ endfunction
 
 " 获得一般类成员函数
 function! s:get_normal_fun(fun)
-    let pos = stridx(a:fun, "(")
-    let temp = strpart(a:fun, 0, pos)
-    let fun_pos = strridx(temp, " ")
+    let pos = cppfun#util#find(a:fun, "(")
+    let temp = cppfun#util#substr(a:fun, 0, pos)
+    let fun_pos = cppfun#util#find_r(temp, " ")
 
-    return strpart(a:fun, 0, fun_pos) . " " . s:class_name . "::" . strpart(a:fun, fun_pos + 1, len(a:fun))
+    return cppfun#util#substr(a:fun, 0, fun_pos) . " " . s:class_name . "::" . cppfun#util#substr(a:fun, fun_pos + 1, len(a:fun))
 endfunction
 
 " 注释函数默认参数值
