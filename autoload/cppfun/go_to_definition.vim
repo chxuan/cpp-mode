@@ -9,22 +9,30 @@
 function! cppfun#go_to_definition#go_to_definition()
     let suffix = cppfun#util#get_current_file_suffix()
 
-    if suffix == "h"
-        let cpp_file = <sid>get_cpp_file_path()
-        if cppfun#util#is_file_exists(cpp_file)
-            call <sid>go_to_fun_definition(cpp_file)
-            return
-        endif
+    if suffix == "h" || suffix == "hpp"
+        let paths = <sid>get_implement_file_paths()
+        for i in range(0, len(paths) - 1)
+            if cppfun#util#is_file_exists(paths[i])
+                call <sid>go_to_fun_definition(paths[i])
+                return
+            endif
+        endfor
     endif
 
     let file_path = cppfun#util#get_current_file_path()
     call <sid>go_to_fun_definition(file_path)
 endfunction
 
-" 获取cpp文件路径
-function! s:get_cpp_file_path()
-    let file_path = cppfun#util#get_current_file_path()
-    return cppfun#util#substr(file_path, 0, len(file_path) - 1) . "cpp"
+" 获取可能存在的实现文件
+function! s:get_implement_file_paths()
+    let dir = cppfun#util#get_current_dir()
+    let base_name = cppfun#util#get_current_file_base_name()
+
+    let paths = []
+    call add(paths, dir . "/" . base_name . ".cpp")
+    call add(paths, dir . "/" . base_name . ".cc")
+
+    return paths
 endfunction
 
 " 转到函数定义

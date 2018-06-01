@@ -150,6 +150,17 @@ function! cppfun#util#get_current_file_path()
     return expand("%:p")
 endfunction
 
+" 获取当前文件的base name
+function! cppfun#util#get_current_file_base_name()
+    let file_path = cppfun#util#get_current_file_path()
+    return fnamemodify(file_path, ":t:r")
+endfunction
+
+" 获取当前目录
+function! cppfun#util#get_current_dir()
+    return getcwd()
+endfunction
+
 " 获取当前文件后缀名
 function! cppfun#util#get_current_file_suffix()
     return expand("%:e")
