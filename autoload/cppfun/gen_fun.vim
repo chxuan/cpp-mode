@@ -29,7 +29,7 @@ endfunction
 " 粘贴函数
 function! cppfun#gen_fun#paste_function()
     call cppfun#util#write_text_at_next_row(<sid>get_fun_skeleton())
-    call cppfun#util#set_cursor_position(cppfun#util#get_current_row_num() - 2)
+    call cppfun#util#set_cursor_position(cppfun#util#get_current_row_num() - 2, 0)
 endfunction
 
 " 获得函数声明

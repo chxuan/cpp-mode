@@ -8,8 +8,12 @@
 " 转到定义
 function! cppfun#go_to_definition#go_to_definition()
     let suffix = cppfun#util#get_current_file_suffix()
+    call <sid>go_to_definition_by_suffix(suffix)
+endfunction
 
-    if suffix == "h" || suffix == "hpp"
+" 通过后缀名判断来转到函数定义
+function! s:go_to_definition_by_suffix(suffix)
+    if a:suffix == "h" || a:suffix == "hpp"
         let paths = <sid>get_implement_file_paths()
         for i in range(0, len(paths) - 1)
             if cppfun#util#is_file_exists(paths[i])
@@ -45,9 +49,11 @@ function! s:go_to_fun_definition(file_path)
         if a:file_path != cppfun#util#get_current_file_path()
             call cppfun#util#open_window(a:file_path)
         endif
-        call cppfun#util#set_cursor_position(row_num)
-    endif
 
+        let text = cppfun#util#get_row_text(row_num)
+        let col_num = cppfun#util#find(text, "::" . fun_name) + 3
+        call cppfun#util#set_cursor_position(row_num, col_num)
+    endif
 endfunction
 
 " 获得行号

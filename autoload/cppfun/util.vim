@@ -57,8 +57,8 @@ function! cppfun#util#is_contains(main, sub)
 endfunction
 
 " 设置光标位置
-function! cppfun#util#set_cursor_position(row_num)
-    let pos = [0, a:row_num, 0, 0]  
+function! cppfun#util#set_cursor_position(row_num, col_num)
+    let pos = [0, a:row_num, a:col_num, 0]  
     call setpos(".", pos)
 endfunction
 

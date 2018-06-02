@@ -31,7 +31,7 @@ function! s:format_param()
     let fun = cppfun#util#get_current_row_text()
     call cppfun#util#delete_current_row()
     call cppfun#util#write_text_at_current_row(<sid>get_format_fun_text(fun))
-    call cppfun#util#set_cursor_position(fun_row_num)
+    call cppfun#util#set_cursor_position(fun_row_num, 0)
     let begin_num = <sid>get_fun_begin_num()
     let end_num = <sid>get_fun_end_num()
     call cppfun#util#set_code_alignment(end_num - begin_num + 2)
@@ -41,7 +41,7 @@ endfunction
 function! s:recover_format_param()
     let begin_num = <sid>get_fun_begin_num()
     let end_num = <sid>get_fun_end_num()
-    call cppfun#util#set_cursor_position(begin_num)
+    call cppfun#util#set_cursor_position(begin_num, 0)
     call cppfun#util#merge_row(begin_num, end_num)
 endfunction
 
