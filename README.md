@@ -9,10 +9,11 @@ cppfun: A generate cpp function definition plugin for vim
 使用
 ------------
 
-请将以下配置加到 `~/.vimrc`:
+请将以下配置加到 `~/.vimrc`，如果不喜欢以下映射，可根据个人喜好更改。
 
     nnoremap <leader>y :CopyFun<cr>
     nnoremap <leader>p :PasteFun<cr>
+    nnoremap <leader>U :GoToDefinition<cr>
     nnoremap <leader><leader>fp :FormatFunParam<cr>
     nnoremap <leader><leader>if :FormatIf<cr>
 
