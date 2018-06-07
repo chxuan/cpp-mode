@@ -16,9 +16,11 @@ endfunction
 
 " 检查是否已经格式化
 function! s:is_ready_format()
-    let text = cppfun#util#get_current_row_text()
+    let curr_row = cppfun#util#get_current_row_text()
+    let curr_row_num = cppfun#util#get_current_row_num()
+    let next_row = cppfun#util#get_row_text(curr_row_num + 1)
 
-    if cppfun#util#is_contains(text, "if") && cppfun#util#is_contains(text, "(") && cppfun#util#is_contains(text, ")")
+    if cppfun#util#is_contains(curr_row, "if") && cppfun#util#is_contains(next_row, "{")
         return 0
     endif
 

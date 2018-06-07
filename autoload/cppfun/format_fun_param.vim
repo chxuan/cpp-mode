@@ -43,6 +43,7 @@ function! s:recover_format_param()
     let end_num = <sid>get_fun_end_num()
     call cppfun#util#set_cursor_position(begin_num, 0)
     call cppfun#util#merge_row(begin_num, end_num)
+    call cppfun#util#set_cursor_position(begin_num, 0)
 endfunction
 
 " 获得格式化后的函数文本
