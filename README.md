@@ -1,4 +1,4 @@
-cppfun: A generate cpp function definition plugin for vim
+cppfun: A C++ IDE for vim
 ===============================================
 
 安装
@@ -16,6 +16,7 @@ cppfun: A generate cpp function definition plugin for vim
     nnoremap <leader>U :GoToDefinition<cr>
     nnoremap <leader><leader>fp :FormatFunParam<cr>
     nnoremap <leader><leader>if :FormatIf<cr>
+    nnoremap <silent> <leader>a :Switch<cr>
 
 截图
 ------------
