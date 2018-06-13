@@ -46,7 +46,7 @@ function! s:go_to_fun_definition(file_path)
 
     if row_num != -1
         if a:file_path != cppfun#util#get_current_file_path()
-            call cppfun#util#open_window(a:file_path)
+            call cppfun#util#open_tab(a:file_path)
         endif
 
         let text = cppfun#util#get_row_text(row_num)

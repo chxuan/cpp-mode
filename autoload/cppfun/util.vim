@@ -171,8 +171,8 @@ function! cppfun#util#read_file(file_path)
     return readfile(a:file_path)
 endfunction
 
-" 打开窗口
-function! cppfun#util#open_window(file_path)
+" 打开标签
+function! cppfun#util#open_tab(file_path)
     execute ":edit " . a:file_path
 endfunction
 
