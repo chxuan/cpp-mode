@@ -41,10 +41,10 @@ cpp-mode: A C++ IDE for vim
 
     格式化if条件，用于if条件判断过多的情况
 
+参考配置
+------------
 
-- `参考配置`
-
-    请将以下配置加到 `~/.vimrc`，如果不喜欢以下映射，可根据个人喜好更改。
+请将以下配置加到 `~/.vimrc`，如果不喜欢以下映射，可根据个人喜好更改。
 
     nnoremap <leader>y :CopyFun<cr>
     nnoremap <leader>p :PasteFun<cr>
