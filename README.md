@@ -17,13 +17,13 @@ cpp-mode: A C++ IDE for vim
 使用
 ------------
 
-- `:CopyFun`
+- `:CopyCode`
 
-    拷贝函数，和`:PasteFun`结合使用
+    拷贝函数或变量，和`:PasteCode`结合使用
 
-- `:PasteFun`
+- `:PasteCode`
 
-    生成函数实现，和`:CopyFun`结合使用
+    生成函数实现或变量定义，和`:CopyCode`结合使用
 
 - `:GoToDefinition`
     
@@ -46,8 +46,8 @@ cpp-mode: A C++ IDE for vim
 
 请将以下配置加到 `~/.vimrc`，如果不喜欢以下映射，可根据个人喜好更改。
 
-    nnoremap <leader>y :CopyFun<cr>
-    nnoremap <leader>p :PasteFun<cr>
+    nnoremap <leader>y :CopyCode<cr>
+    nnoremap <leader>p :PasteCode<cr>
     nnoremap <leader>U :GoToDefinition<cr>
     nnoremap <silent> <leader>a :Switch<cr>
     nnoremap <leader><leader>fp :FormatFunParam<cr>
