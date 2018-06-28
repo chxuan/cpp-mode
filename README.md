@@ -3,8 +3,7 @@ cpp-mode: A C++ IDE for vim
 
 ![][1]
 
-安装
-------------
+## 安装
     
 - `vim-plug`
 
@@ -14,8 +13,7 @@ cpp-mode: A C++ IDE for vim
 
     Plugin 'chxuan/cpp-mode'
 
-使用
-------------
+## 使用
 
 - `:CopyCode`
 
@@ -41,8 +39,7 @@ cpp-mode: A C++ IDE for vim
 
     格式化if条件，用于if条件判断过多的情况
 
-参考配置
-------------
+## 参考配置
 
 请将以下配置加到 `~/.vimrc`，如果不喜欢以下映射，可根据个人喜好更改。
 
@@ -53,8 +50,7 @@ cpp-mode: A C++ IDE for vim
     nnoremap <leader><leader>fp :FormatFunParam<cr>
     nnoremap <leader><leader>if :FormatIf<cr>
 
-License
-------------
+## License
 
 This software is licensed under the [MIT license][2]. © 2018 chxuan
 
