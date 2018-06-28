@@ -29,8 +29,12 @@ endfunction
 function! s:go_to_impl_in_head_file()
     let file_path = <sid>get_head_file_path()
 
-    if cppmode#util#is_exist(file_path) && <sid>go_to_impl_with_class(file_path) == -1
-        return <sid>go_to_impl_not_with_class(file_path)
+    if cppmode#util#is_exist(file_path)
+        if <sid>go_to_impl_with_class(file_path) == 1
+            return 1
+        else
+            return <sid>go_to_impl_not_with_class(file_path)
+        endif
     endif
 
     return -1
