@@ -15,7 +15,7 @@ let s:is_fun = 0
 
 command! -nargs=0 CopyCode call <sid>copy_code() 
 command! -nargs=0 PasteCode call <sid>paste_code()
-command! -nargs=0 GoToDefinition call cppmode#go_to_definition#go_to_definition()
+command! -nargs=0 GoToFunImpl call cppmode#go_to_fun_impl#go_to_fun_impl()
 command! -nargs=0 FormatFunParam call cppmode#format_fun_param#format_function_param()
 command! -nargs=0 FormatIf call cppmode#format_if#format_if()
 command! -nargs=0 Switch call cppmode#switch#switch_file()

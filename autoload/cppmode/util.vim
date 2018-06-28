@@ -141,7 +141,7 @@ function! cppmode#util#substr(str, start, count)
 endfunction
 
 " 判断文件是否存在
-function! cppmode#util#is_file_exists(file_path)
+function! cppmode#util#is_exist(file_path)
     return filereadable(a:file_path)
 endfunction
 

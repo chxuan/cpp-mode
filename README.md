@@ -25,7 +25,7 @@ cpp-mode: A C++ IDE for vim
 
     生成函数实现或变量定义，和`:CopyCode`结合使用
 
-- `:GoToDefinition`
+- `:GoToFunImpl`
     
     转到函数实现，该功能可替代ycm提供的转到函数实现（因为ycm转到函数实现经常不成功）
 
