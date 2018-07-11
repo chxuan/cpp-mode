@@ -64,17 +64,17 @@ endfunction
 
 " 在当前行写入文本
 function! cppmode#util#write_text_at_current_row(text)
-    execute "normal i" . a:text
+    execute "normal! i" . a:text
 endfunction
 
 " 在下一行行写入文本
 function! cppmode#util#write_text_at_next_row(text)
-    execute "normal o" . a:text
+    execute "normal! o" . a:text
 endfunction
 
 " 从当前行开始对齐
 function! cppmode#util#set_code_alignment(size)
-    execute "normal =" . a:size . "="
+    execute "normal! =" . a:size . "="
 endfunction
 
 " 获得当前行号
@@ -94,12 +94,12 @@ endfunction
 
 " 删除当前行
 function! cppmode#util#delete_current_row()
-    execute "normal dd"
+    execute "normal! dd"
 endfunction
 
 " 将下一行追加到当前行尾
 function! cppmode#util#append_to_current_row()
-    execute "normal J"
+    execute "normal! J"
 endfunction
 
 " 合并开始、结束行之间的文本
