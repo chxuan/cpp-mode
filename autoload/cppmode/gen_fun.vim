@@ -21,8 +21,8 @@ function! cppmode#gen_fun#copy_function()
     echo s:fun_template_declaration
     echo s:fun_declaration
 
-    let row_num = <sid>get_row_num_of_class_name()
-    let s:class_name = <sid>get_class_name_of_fun(row_num)
+    let row_num = <sid>get_class_name_row_num()
+    let s:class_name = <sid>get_class_name(row_num)
     let s:class_template_declaration = <sid>get_class_template_declaration(row_num)
 endfunction
 
@@ -50,7 +50,7 @@ function! s:get_fun_template_declaration()
 endfunction
 
 " 获得类名所在行号
-function! s:get_row_num_of_class_name()
+function! s:get_class_name_row_num()
     let current_num = cppmode#util#get_current_row_num()
 
     while current_num >= 1
@@ -65,7 +65,7 @@ function! s:get_row_num_of_class_name()
 endfunction
 
 " 获得函数所在类名
-function! s:get_class_name_of_fun(row_num)
+function! s:get_class_name(row_num)
     let text = cppmode#util#get_row_text(a:row_num)
     return <sid>parse_class_name(text)
 endfunction
@@ -124,11 +124,8 @@ endfunction
 
 " 获得一般类成员函数
 function! s:get_normal_fun(fun)
-    let pos = cppmode#util#find(a:fun, "(")
-    let temp = cppmode#util#substr(a:fun, 0, pos)
-    let fun_pos = cppmode#util#find_r(temp, " ")
-
-    return cppmode#util#substr(a:fun, 0, fun_pos) . " " . s:class_name . "::" . cppmode#util#substr(a:fun, fun_pos + 1, len(a:fun))
+    let ret = matchlist(a:fun, '\s*\(\w\+\s\+\)\(\w\+(.*)\)')
+    return ret[1] . s:class_name . "::" . ret[2]
 endfunction
 
 " 注释函数默认参数值
@@ -164,8 +161,8 @@ endfunction
 
 " 获得类类型
 function! s:get_class_template_type()
-    let key_words = ["template", "typename", "class"]
-    return cppmode#util#erase_char(cppmode#util#erase_string_list(s:class_template_declaration, key_words), " ")
+    let type = matchlist(s:class_template_declaration, '\s*template\s*<\s*\w\+\s*\(\w\+\)\s*>')[1]
+    return "<" . type . ">"
 endfunction
 
 " 增加函数体
