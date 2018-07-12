@@ -83,7 +83,7 @@ endfunction
 
 " 解析类名
 function! s:parse_class_name(text)
-    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w[a-zA-Z0-9_]*\)')[2]
+    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w*\)')[2]
 endfunction
 
 " 获得函数骨架代码
