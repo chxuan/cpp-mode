@@ -76,7 +76,7 @@ function! s:go_to_impl_with_class(file_path)
     let lines = cppmode#util#read_file(a:file_path)
     let row_num = <sid>get_row_num_with_class(lines, fun_name)
 
-    if row_num != -1
+    if row_num > 0
         if a:file_path != cppmode#util#get_file_path()
             call cppmode#util#open_tab(a:file_path)
         endif
@@ -97,7 +97,7 @@ function! s:go_to_impl_not_with_class(file_path)
     let lines = cppmode#util#read_file(a:file_path)
     let row_num = <sid>get_row_num_not_with_class(lines, fun_name)
 
-    if row_num != -1
+    if row_num > 0
         if a:file_path != cppmode#util#get_file_path()
             call cppmode#util#open_tab(a:file_path)
         endif
@@ -117,7 +117,7 @@ function! s:get_row_num_with_class(lines, fun_name)
     let target = "::" . a:fun_name . "("
 
     for i in range(0, len(a:lines) - 1)
-        if cppmode#util#is_contains(a:lines[i], target)
+        if cppmode#util#is_contains(a:lines[i], target) && !cppmode#util#is_contains(a:lines[i], ";")
             return i + 1
         endif
     endfor
