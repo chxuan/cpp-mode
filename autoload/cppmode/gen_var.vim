@@ -52,20 +52,12 @@ endfunction
 
 " 解析类名
 function! s:parse_class_name(text)
-    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w[a-zA-Z0-9_]*\)')[2]
+    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w*\)')[2]
 endfunction
 
 " 获得变量骨架代码
 function! s:get_var_skeleton()
-    let skeleton = <sid>remove_var_key_words()
-    let pos = cppmode#util#find_r(skeleton, " ")
-
-    return cppmode#util#substr(skeleton, 0, pos + 1) . s:class_name . "::" . cppmode#util#substr(skeleton, pos + 1, len(skeleton))
-endfunction
-
-" 去除变量关键字
-function! s:remove_var_key_words()
-    let key_words = ["static"]
-    return cppmode#util#trim_left(cppmode#util#erase_string_list(s:var_declaration, key_words))
+    let ret = matchlist(s:var_declaration, '\s*static\s\+\(\w\+\)\s\+\(\w\+\);')
+    return ret[1] . " " . s:class_name . "::" . ret[2] . ";"
 endfunction
 
