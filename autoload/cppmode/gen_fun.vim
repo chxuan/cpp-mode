@@ -90,7 +90,8 @@ endfunction
 function! s:get_fun_skeleton()
     let skeleton = <sid>remove_fun_key_words()
 
-    if cppmode#util#is_contains(skeleton, s:class_name . "(")
+    let fun_name = <sid>parse_fun_name(skeleton)
+    if fun_name == s:class_name
         let skeleton = <sid>get_default_fun(skeleton)
     else
         let skeleton = <sid>get_normal_fun(skeleton)
@@ -115,6 +116,11 @@ endfunction
 function! s:remove_fun_key_words()
     let key_words = ["inline", "static", "virtual", "explicit", "override", "final"]
     return cppmode#util#erase_char(cppmode#util#trim_left(cppmode#util#erase_string_list(s:fun_declaration, key_words)), ";")
+endfunction
+
+" 解析函数名
+function! s:parse_fun_name(str)
+    return matchlist(a:str, '\s*\(\w\+\)(')[1]
 endfunction
 
 " 获得默认类成员函数（构造函数、析构函数等没有返回值的函数）
