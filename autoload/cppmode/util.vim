@@ -146,23 +146,30 @@ function! cppmode#util#is_exist(file_path)
 endfunction
 
 " 获取当前文件路径
-function! cppmode#util#get_current_file_path()
+function! cppmode#util#get_file_path()
     return expand("%:p")
 endfunction
 
 " 获取当前文件的base name
-function! cppmode#util#get_current_file_base_name()
-    let file_path = cppmode#util#get_current_file_path()
+function! cppmode#util#get_file_base_name()
+    let file_path = cppmode#util#get_file_path()
     return fnamemodify(file_path, ":t:r")
 endfunction
 
+" 获取当前文件的base name
+function! cppmode#util#get_base_name_with_path()
+    let file_path = cppmode#util#get_file_path()
+    let pos = cppmode#util#find(file_path, ".")
+    return cppmode#util#substr(file_path, 0, pos)
+endfunction
+
 " 获取当前文件后缀名
-function! cppmode#util#get_current_file_suffix()
+function! cppmode#util#get_file_suffix()
     return expand("%:e")
 endfunction
 
 " 获取光标下的单词
-function! cppmode#util#get_current_cursor_word()
+function! cppmode#util#get_cursor_word()
     return expand("<cword>")
 endfunction
 

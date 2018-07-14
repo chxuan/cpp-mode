@@ -42,8 +42,8 @@ endfunction
 
 " 获得实现文件路径
 function! s:get_impl_file_path()
-    let file_path = cppmode#util#get_current_file_path()
-    let suffix = cppmode#util#get_current_file_suffix()
+    let file_path = cppmode#util#get_file_path()
+    let suffix = cppmode#util#get_file_suffix()
 
     if suffix == "cpp"
         return file_path
@@ -57,8 +57,8 @@ endfunction
 
 " 获得头文件路径
 function! s:get_head_file_path()
-    let file_path = cppmode#util#get_current_file_path()
-    let suffix = cppmode#util#get_current_file_suffix()
+    let file_path = cppmode#util#get_file_path()
+    let suffix = cppmode#util#get_file_suffix()
 
     if suffix == "h"
         return file_path
@@ -72,12 +72,12 @@ endfunction
 
 " 转到函数实现
 function! s:go_to_impl_with_class(file_path)
-    let fun_name = cppmode#util#get_current_cursor_word()
+    let fun_name = cppmode#util#get_cursor_word()
     let lines = cppmode#util#read_file(a:file_path)
     let row_num = <sid>get_row_num_with_class(lines, fun_name)
 
     if row_num != -1
-        if a:file_path != cppmode#util#get_current_file_path()
+        if a:file_path != cppmode#util#get_file_path()
             call cppmode#util#open_tab(a:file_path)
         endif
 
@@ -93,12 +93,12 @@ endfunction
 
 " 转到函数实现
 function! s:go_to_impl_not_with_class(file_path)
-    let fun_name = cppmode#util#get_current_cursor_word()
+    let fun_name = cppmode#util#get_cursor_word()
     let lines = cppmode#util#read_file(a:file_path)
     let row_num = <sid>get_row_num_not_with_class(lines, fun_name)
 
     if row_num != -1
-        if a:file_path != cppmode#util#get_current_file_path()
+        if a:file_path != cppmode#util#get_file_path()
             call cppmode#util#open_tab(a:file_path)
         endif
 
