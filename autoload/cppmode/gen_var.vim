@@ -31,7 +31,7 @@ endfunction
 
 " 获得类名所在行号
 function! s:get_row_num_of_class_name()
-    return search('^\s*\<struct\>\|\<class\>\s\+\w\+\n{', 'bnz')
+    return search('^\s*\<struct\>\|\<class\>\s\+.\+\n{', 'bnz')
 endfunction
 
 " 获得函数所在类名
