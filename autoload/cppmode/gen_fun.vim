@@ -55,7 +55,8 @@ function! s:get_class_name_row_num()
 
     while current_num >= 1
         let text = cppmode#util#get_row_text(current_num)
-        if (cppmode#util#is_contains(text, "class ") || cppmode#util#is_contains(text, "struct ")) && !cppmode#util#is_contains(text, "template")
+        if (cppmode#util#is_contains(text, "class ") || cppmode#util#is_contains(text, "struct ")) 
+            \ && !cppmode#util#is_contains(text, "template") && !cppmode#util#is_contains(text, "friend") 
             return current_num
         endif
         let current_num -= 1
