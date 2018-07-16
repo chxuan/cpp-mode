@@ -120,7 +120,7 @@ endfunction
 
 " 获得一般类成员函数
 function! s:get_normal_fun(fun)
-    let ret = matchlist(a:fun, '\s*\(\w\+\s\+\)\(\w\+(.*)\)')
+    let ret = matchlist(a:fun, '\s*\(.\+\s\+\)\(\w\+(.*)\)')
     return ret[1] . s:class_name . "::" . ret[2]
 endfunction
 
