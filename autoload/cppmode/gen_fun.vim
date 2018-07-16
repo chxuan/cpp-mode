@@ -51,18 +51,7 @@ endfunction
 
 " 获得类名所在行号
 function! s:get_class_name_row_num()
-    let current_num = cppmode#util#get_current_row_num()
-
-    while current_num >= 1
-        let text = cppmode#util#get_row_text(current_num)
-        if (cppmode#util#is_contains(text, "class ") || cppmode#util#is_contains(text, "struct ")) 
-            \ && !cppmode#util#is_contains(text, "template") && !cppmode#util#is_contains(text, "friend") 
-            return current_num
-        endif
-        let current_num -= 1
-    endwhile
-
-    return -1
+    return search('^\s*\<struct\>\|\<class\>\s\+\w\+\n{', 'bnz')
 endfunction
 
 " 获得函数所在类名
@@ -84,7 +73,7 @@ endfunction
 
 " 解析类名
 function! s:parse_class_name(text)
-    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w*\)')[2]
+    return matchlist(a:text, '\(\<class\>\|\<struct\>\)\s\+\(\w\+\)')[2]
 endfunction
 
 " 获得函数骨架代码
