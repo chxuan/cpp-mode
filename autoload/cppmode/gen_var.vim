@@ -31,7 +31,7 @@ endfunction
 
 " 获得类名所在行号
 function! s:get_row_num_of_class_name()
-    return search('^\s*\<struct\>\|\<class\>\s\+.\+\n{', 'bnz')
+    return search('^\<struct\>\|\<class\>\s\+.\+\n{', 'bnz')
 endfunction
 
 " 获得函数所在类名
@@ -47,7 +47,7 @@ endfunction
 
 " 获得变量骨架代码
 function! s:get_var_skeleton()
-    let ret = matchlist(s:var_declaration, '\s*static\s\+\(\w\+\)\s\+\(\w\+\);')
+    let ret = matchlist(s:var_declaration, '\s*static\s\+\(.\+\)\s\+\(\w\+\);')
     return ret[1] . " " . s:class_name . "::" . ret[2] . ";"
 endfunction
 
