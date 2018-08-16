@@ -159,7 +159,7 @@ endfunction
 " 获取当前文件的base name
 function! cppmode#util#get_base_name_with_path()
     let file_path = cppmode#util#get_file_path()
-    let pos = cppmode#util#find(file_path, ".")
+    let pos = cppmode#util#find_r(file_path, ".")
     return cppmode#util#substr(file_path, 0, pos)
 endfunction
 
