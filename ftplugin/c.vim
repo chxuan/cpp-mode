@@ -11,4 +11,6 @@ endif
 
 let g:cppmode_loaded = 1
 
+command! -nargs=0 FormatFunParam call cppmode#format_fun_param#format_function_param()
+command! -nargs=0 FormatIf call cppmode#format_if#format_if()
 command! -nargs=0 Switch call cppmode#switch#switch_file()
