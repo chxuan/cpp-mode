@@ -10,7 +10,7 @@ function! cppmode#switch#switch_file()
     let suffix = cppmode#util#get_file_suffix()
     if suffix == "h" || suffix == "hpp"
         call <sid>switch_to_implement_file(suffix)    
-    elseif suffix == "cc" || suffix == "cpp"
+    elseif suffix == "cc" || suffix == "cpp" || suffix == "c"
         call <sid>switch_to_head_file(suffix)
     endif
 endfunction
@@ -61,6 +61,7 @@ function! s:get_implement_file_path(suffix)
 
     call add(paths, name . ".cpp")
     call add(paths, name . ".cc")
+    call add(paths, name . ".c")
 
     return paths
 endfunction
