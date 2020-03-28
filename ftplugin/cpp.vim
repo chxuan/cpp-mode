@@ -19,6 +19,7 @@ command! -nargs=0 GoToFunImpl call cppmode#go_to_fun_impl#go_to_fun_impl()
 command! -nargs=0 FormatFunParam call cppmode#format_fun_param#format_function_param()
 command! -nargs=0 FormatIf call cppmode#format_if#format_if()
 command! -nargs=0 Switch call cppmode#switch#switch_file()
+command! -nargs=0 GenTryCatch call cppmode#gen_try_catch#gen_code()
 
 " 拷贝代码
 function! s:copy_code()

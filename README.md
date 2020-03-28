@@ -35,9 +35,9 @@ cpp-mode: A C++ IDE for vim
 
     格式化函数参数，用于函数参数列表过多的情况
 
-- `:FormatIf`
+- `:GenTryCatch`
 
-    格式化if条件，用于if条件判断过多的情况
+    生成try-catch代码块
 
 ## 参考配置
 
@@ -49,6 +49,7 @@ cpp-mode: A C++ IDE for vim
     nnoremap <silent> <leader>a :Switch<cr>
     nnoremap <leader><leader>fp :FormatFunParam<cr>
     nnoremap <leader><leader>if :FormatIf<cr>
+    nnoremap <leader><leader>t :GenTryCatch<cr>
 
 ## License
 
