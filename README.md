@@ -49,7 +49,8 @@ cpp-mode: A C++ IDE for vim
     nnoremap <silent> <leader>a :Switch<cr>
     nnoremap <leader><leader>fp :FormatFunParam<cr>
     nnoremap <leader><leader>if :FormatIf<cr>
-    nnoremap <leader><leader>t :GenTryCatch<cr>
+    nnoremap <leader><leader>t dd :GenTryCatch<cr>
+    xnoremap <leader><leader>t d :GenTryCatch<cr>
 
 ## License
 

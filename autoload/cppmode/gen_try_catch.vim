@@ -8,17 +8,15 @@
 " 生成try catch代码
 function! cppmode#gen_try_catch#gen_code()
     let curr = cppmode#util#get_current_row_num()
-    let text = cppmode#util#get_current_row_text()
-    let skeleton = <sid>get_try_catch_skeleton(text)
-    call cppmode#util#delete_current_row()
-    call cppmode#util#write_text_at_current_row(skeleton)
+    let skeleton = <sid>get_try_catch_skeleton()
+    call cppmode#util#write_text_at_last_row(skeleton)
     call cppmode#util#set_cursor_position(curr, 0)
-    call cppmode#util#set_code_alignment(8)
-    call cppmode#util#set_cursor_position(curr + 6, 0)
+    let cnt = cppmode#util#get_char_count(@", "\n")
+    call cppmode#util#set_code_alignment(7 + cnt)
+    call cppmode#util#set_cursor_position(curr + cnt + 5, 0)
 endfunction
 
 " 生成代码骨架
-function! s:get_try_catch_skeleton(text)
-    return "try\n{\n" . a:text . "\n}\ncatch (std::exception& e)\n{\n\n}\n"
+function! s:get_try_catch_skeleton()
+    return "try\n{\n" . @" . "}\ncatch (std::exception& e)\n{\n\n}\n"
 endfunction
-

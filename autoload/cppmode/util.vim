@@ -62,6 +62,11 @@ function! cppmode#util#set_cursor_position(row_num, col_num)
     call setpos(".", pos)
 endfunction
 
+" 在上一行写入文本
+function! cppmode#util#write_text_at_last_row(text)
+    execute "normal! O" . a:text
+endfunction
+
 " 在当前行写入文本
 function! cppmode#util#write_text_at_current_row(text)
     execute "normal! i" . a:text
@@ -181,5 +186,18 @@ endfunction
 " 打开标签
 function! cppmode#util#open_tab(file_path)
     execute ":edit " . a:file_path
+endfunction
+
+" 获取文本下有多少个目标字符
+function! cppmode#util#get_char_count(text, ch)
+    let cnt = 0
+
+    for i in range(0, len(a:text) - 1)
+        if a:text[i] == a:ch
+            let cnt = cnt + 1
+        endif
+    endfor
+
+    return cnt
 endfunction
 
